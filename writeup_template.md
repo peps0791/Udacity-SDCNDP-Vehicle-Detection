@@ -28,7 +28,7 @@ The goals / steps of this project are the following:
 [image18]: ./images/Selection_022.png
 
 
-###The Dataset
+### The Dataset
 
 The labeled [vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/vehicles.zip) and [non vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/non-vehicles.zip) images to train our classifier are first loaded.
 
@@ -37,9 +37,9 @@ Here are some of the images from the dataset.
 ![alt text][image1]
 
 
-###Histogram of Oriented Gradients (HOG)
+### Histogram of Oriented Gradients (HOG)
 
-####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
+#### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
 To extract hog features, hog function from the skimage library is used.
 The `get_hog_features` method takes in an image along with other parameters such as cells per block, orient,pixels per cell and returns the hog features.
@@ -52,7 +52,7 @@ Next up, the `extract_features` function takes in a collection of images along w
 
 This set is then split into training and testing set.
 
-####2. Explain how you settled on your final choice of HOG parameters.
+#### 2. Explain how you settled on your final choice of HOG parameters.
 
 I tried with various combinations of HOG parameters and the results are shown below:
 
@@ -63,13 +63,13 @@ As seen from the table:
 2. RGB colorspace , expectedly, doesnt perform quite as well as other color spaces.
 3. Combination of YCrCb color space, along with orient value of 10, 16 pixels per cell , and 2 cells per block , does the best job at accuracy as well as at time taken to make predictions.
 
-####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
+#### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
 Next up, in the `Train the Classifier` section, Linear SVM is instantiated and trained.
 
-###Sliding Window Search
+### Sliding Window Search
 
-####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
+#### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
 The `find_cars` function combines the job of extracting HOG features from the image and then perform subsampling, making a prediction for a particular portion of the image (window), thus implementing the sliding window approach, efficiently. Each window is defined by a scaling factor. 
 The function returns the bounding boxes for regions where the prediction was true (vehicle was detected) in the image.
@@ -102,7 +102,7 @@ Various scaling factors for different window sizes were tried. Here are the resu
 The smallest scaling factor has been as 1.0. Anything smaller than that would result in too many false positives. Also, the regions to look for cars has been restricted for each window scale size(smaller window scales->smaller sizes->far away vehicles->smaller vertical range). Larger scale windows are reserved for near (and hence larger seeming) vehicles , thus having larger vertical region to look in.
 
 
-####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
+#### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
 The last part in the pipeline is the **removal of false positives**. 
 Heatmap approach is used for this.
@@ -137,7 +137,7 @@ Following changes to the HOG parameters resulted in increased classifier accurac
 
 ### Video Implementation
 
-####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
+#### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
 
 For video implementation, one last thing has to be considered. Using information from previous frames. 
 A Vehicle Detection class is created for storing bounding boxes extracted from each frame and are added to a collection.
@@ -147,9 +147,9 @@ This collective historical information is added to the heatmap and then half of 
 
 ---
 
-###Discussion
+### Discussion
 
-####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
 1. Choice of classifier is a significant issue in this project. Whilst we achieve 98% accuracy , still there are false positives and in cases where the conditions are not much similar to training data, the classifier would fail.
 
